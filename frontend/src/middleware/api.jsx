@@ -1,6 +1,5 @@
-const API_BASE = import.meta.env.VITE_API_BASE;
 
-export const startStream = async (file = null) => {
+export const startStream = async (API_BASE, file = null) => {
   let res;
   
   if (file) {
@@ -32,7 +31,7 @@ export const startStream = async (file = null) => {
 
 
 
-export const stopStream = async () => {
+export const stopStream = async (API_BASE) => {
   const res = await fetch(`${API_BASE}/stop`, { method: "POST" });
   const result = await res.json();
   if (!res.ok) {

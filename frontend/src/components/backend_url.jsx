@@ -4,10 +4,9 @@ import { FaEdit, FaTimes, FaWifi } from "react-icons/fa";
 
 const API_BACKEND = import.meta.env.VITE_BACKEND;
 
-const Backend_url = function({ setNotification }){
+const Backend_url = function({ setNotification, ngrok_url, setNgrok_url }){
 
 	const [url, setUrl] = useState(null);
-	const [ngrok_url, setNgrok_url] = useState('');
 
 	useEffect(() => {
 		const get_url = async function(){

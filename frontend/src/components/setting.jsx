@@ -4,7 +4,7 @@ import { FaMagic, FaRobot } from "react-icons/fa";
 import Backend_url from "./backend_url";
 const API_BASE = import.meta.env.VITE_API_BASE;
 
-const Setting = function(){
+const Setting = function({ngrok_url, setNgrok_url}){
 	const [models, setModels] = useState(null);
 	const [currentModel, setCurrentModel] = useState(null);
 	const [notification, setNotification] = useState(null);
@@ -64,7 +64,7 @@ const Setting = function(){
 
 			<div className="flex flex-col gap-2">
 				<p>Python Backened Url</p>
-				<Backend_url setNotification={setNotification}/>
+				<Backend_url setNotification={setNotification} ngrok_url={ngrok_url} setNgrok_url={setNgrok_url}/>
 			</div>
 
 			<div className="flex flex-col gap-2">

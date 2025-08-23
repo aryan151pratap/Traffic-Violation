@@ -4,7 +4,7 @@ import Notification from "./notification";
 import Side_Bar from "../tags/side_bar";
 import { FaEllipsisH, FaEllipsisV, FaTimes } from "react-icons/fa";
 
-function Upload() {
+function Upload({ngrok_url}) {
   const [videoFile, setVideoFile] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [mode, setMode] = useState("video");
@@ -37,7 +37,7 @@ function Upload() {
       if (!videoFile) return;
 
       console.log("Sending video:", videoFile.name);
-      const result = await startStream(videoFile);
+      const result = await startStream(ngrok_url, videoFile);
       setNotification(result.result);
       setSend("video");
 
@@ -49,7 +49,7 @@ function Upload() {
 
   const handleCancel = async () => {
     try {
-      const result = await stopStream();
+      const result = await stopStream(ngrok_url);
       setNotification(result.result);
       setVideoUrl("");
       setSend(null);
@@ -61,7 +61,7 @@ function Upload() {
 
   useEffect(() => {
     if (send) {
-      setVideoUrl(`http://localhost:5000/video?t=${Date.now()}`);
+      setVideoUrl(`${ngrok_url}/video?t=${Date.now()}`);
     }
   }, [send]);
 

@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import { startStream, stopStream } from "../middleware/api";
 import Notification from "./notification";
 
-export default function App() {
+export default function Page({ngrok_url}) {
   const [streaming, setStreaming] = useState(false);
   const [videoUrl, setVideoUrl] = useState("");
   const [notification, setNotification] = useState(null);
 
   const handleStart = async (file = null) => {
     try {
-		const result = await startStream(file);
+		const result = await startStream(ngrok_url, file);
       if(result.ok){
         setNotification(result.result);
       }
@@ -23,7 +23,7 @@ export default function App() {
 
   const handleStop = async () => {
     try {
-      const result = await stopStream();
+      const result = await stopStream(ngrok_url);
       if(result.ok){
         setNotification(result.result);
       }
@@ -39,7 +39,7 @@ export default function App() {
   useEffect(() => {
     if (streaming) {
       // Add timestamp to avoid browser caching
-      setVideoUrl(`http://localhost:5000/video?t=${Date.now()}`);
+      setVideoUrl(`${ngrok_url}/video?t=${Date.now()}`);
     }
   }, [streaming]);
 

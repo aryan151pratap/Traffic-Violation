@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Notification from "./notification";
-import { FaMagic, FaRobot } from "react-icons/fa";
+import { FaExclamationTriangle, FaMagic, FaRobot } from "react-icons/fa";
 import Backend_url from "./backend_url";
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -9,6 +9,7 @@ const Setting = function({ngrok_url, setNgrok_url}){
 	const [currentModel, setCurrentModel] = useState(null);
 	const [notification, setNotification] = useState(null);
 	const [selectModel, setSelectModel] = useState(null);
+	const [loading, setLoading] = useState(false);
 	const [currentCamera, setCurrentCamera] = useState(null);
 
 	useEffect(() => {
@@ -16,6 +17,7 @@ const Setting = function({ngrok_url, setNgrok_url}){
 
 		const fetchModels = async () => {
 			try {
+				setLoading(true);
 				const res = await fetch(`${API_BASE}/models`);
 				const result = await res.json();
 				if (res.ok && !ignore) {
@@ -26,6 +28,8 @@ const Setting = function({ngrok_url, setNgrok_url}){
 			} catch (err) {
 				console.error(err);
 				setNotification({ error: err.message });
+			} finally {
+				setLoading(false);
 			}
 		};
 
@@ -77,10 +81,14 @@ const Setting = function({ngrok_url, setNgrok_url}){
 								<FaRobot className="text-slate-900 bg-slate-100 p-[2px] rounded-md h-5 w-5"/>
 								Current model:
 							</span>
-							{currentModel ?
+							{!loading ?
 								<span className="bg-slate-500 flex flex-row items-center text-white rounded-md">
+									{currentModel ?
 									<FaMagic className="text-yellow-400 bg-white w-full h-full px-2 rounded-md border border-slate-500"/>
-									<span className="p-1 px-2">{currentModel}</span>
+									:
+									<FaExclamationTriangle className="text-yellow-400 bg-white w-full h-full px-2 rounded-md border border-slate-500"/>
+									}
+									<span className="shrink-0 p-1 px-2">{currentModel ? currentModel : 'No model found 😥'}</span>
 								</span>
 								:
 								<div className="items-center flex flex-row gap-2 justify-center px-2">
@@ -97,6 +105,12 @@ const Setting = function({ngrok_url, setNgrok_url}){
 								Select model:
 							</span>
 						</div>
+						{loading ?
+						<div className="items-center flex flex-row gap-2 justify-center px-2 ml-auto">
+							<div className="w-fit h-fit p-2.5 border-3 border-t-transparent border-green-500 rounded-full animate-spin"></div>
+							<p>Loading models...</p>
+						</div>
+						: models ?
 						<select className="outline-none ml-auto bg-slate-500 text-white p-1 rounded-md"
 							value={selectModel}
 							onChange={(e) => setSelectModel(e.target.value)}
@@ -107,6 +121,12 @@ const Setting = function({ngrok_url, setNgrok_url}){
 								</option>
 							))}
 						</select>
+						:
+						<div className="outline-none ml-auto bg-slate-500 text-white rounded-md flex flex-row">
+							<FaExclamationTriangle className="h-7 w-7 text-yellow-400 bg-white p-1 rounded-md border border-slate-500"/>
+							<span className="px-2 items-center flex">no models found</span>
+						</div>
+						}
 					</div>
 					{selectModel !== currentModel &&
 					<div className="ml-auto flex flex-row gap-2 border border-slate-200 p-1 rounded-md">

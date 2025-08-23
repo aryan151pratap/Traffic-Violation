@@ -7,20 +7,25 @@ const API_BACKEND = import.meta.env.VITE_BACKEND;
 const Backend_url = function({ setNotification, ngrok_url, setNgrok_url }){
 
 	const [url, setUrl] = useState(null);
+	const [edit, setEdit] = useState(false);
+	const [loading, setLoading] = useState(null);
 
 	useEffect(() => {
 		const get_url = async function(){
 			try{
+				setLoading(true);
 				const res = await fetch(`${API_BACKEND}/api/backend`);
 				const result = await res.json();
 				console.log(result);
 				if(res.ok){
 					setUrl(result.url.url);
-					// setNotification(result);
+					console.log(result.url);
 				}
 			} catch(err) {
 				console.warn(err.message);
 				setNotification({error: err.message});
+			} finally {
+				setLoading(false);
 			}
 		}
 
@@ -36,11 +41,11 @@ const Backend_url = function({ setNotification, ngrok_url, setNgrok_url }){
 					headers: {
 						"Content-Type": "application/json",
 					},
-					body: JSON.stringify({ url: ngrok_url }),
+					body: JSON.stringify({ url }),
 				})
 				if(res.ok){
-					setUrl(ngrok_url);
-					setNgrok_url('');
+					setNgrok_url(url);
+					setEdit(false);
 					setNotification({status: 'Sucessfully url added 🥳'});
 				}
 			}
@@ -62,42 +67,41 @@ const Backend_url = function({ setNotification, ngrok_url, setNgrok_url }){
 							Backend API:
 						</p>
 					</div>
-					{url?.length > 0 ? 
+					{loading ?
+						<div className="items-center flex flex-row gap-2 justify-center px-2">
+							<div className="w-fit h-fit p-2.5 border-3 border-t-transparent border-green-500 rounded-full animate-spin"></div>
+							<p>Loading Backend url...</p>
+						</div>
+					: !edit ? 
 						<div className="flex flex-row gap-2 items-center bg-slate-500 rounded-md border border-slate-500">
 							<FaEdit className="p-1.5 w-full h-full bg-white text-green-500 rounded-md cursor-pointer"
 								onClick={() => {
-									setNgrok_url(url);
-									setUrl('');
+									setEdit(true);
 								}}
 							/>
 							<span className="px-2 text-white">
-								{url}
+								{ngrok_url}
 							</span>
 						</div>
-					:
-					url !== null ?
+					: 
 						<div className="w-full flex flex-row gap-2">
-							<input type="text" value={ngrok_url} placeholder="Enter Python Backened Ngrok Url ..."
+							<input type="text" value={url} placeholder="Enter Python Backened Ngrok Url ..."
 							className="w-full bg-white rounded-md px-2 py-1 text-black outline outline-slate-400 focus:outline-slate-700"
-							onChange={(e) => setNgrok_url(e.target.value)}
+							onChange={(e) => setUrl(e.target.value)}
 							/>
 							<button className="px-2 bg-red-200 rounded-md cursor-pointer"
 								onClick={() => {
 									setUrl(ngrok_url);
+									setEdit(false);
 								}}
 							>
 								<FaTimes className="text-red-500"/>
 							</button>
-							{ngrok_url &&
+							{url &&
 								<button className="px-2 p-1 bg-green-500 text-green-200 rounded focus:bg-green-800 cursor-pointer"
 									onClick={handle_save_url}
 								>Add</button>
 							}
-						</div>
-					:
-						<div className="items-center flex flex-row gap-2 justify-center px-2">
-							<div className="w-fit h-fit p-2.5 border-3 border-t-transparent border-green-500 rounded-full animate-spin"></div>
-							<p>Loading Backend url...</p>
 						</div>
 					}
 				</div>

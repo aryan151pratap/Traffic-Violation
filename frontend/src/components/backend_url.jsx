@@ -6,7 +6,7 @@ const API_BACKEND = import.meta.env.VITE_BACKEND;
 
 const Backend_url = function({ setNotification, ngrok_url, setNgrok_url }){
 
-	const [url, setUrl] = useState(null);
+	const [url, setUrl] = useState(ngrok_url);
 	const [edit, setEdit] = useState(false);
 	const [loading, setLoading] = useState(null);
 

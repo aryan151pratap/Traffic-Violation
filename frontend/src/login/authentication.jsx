@@ -9,6 +9,7 @@ const AuthPages = () => {
   const [otpStep, setOtpStep] = useState(false);
   const navigate = useNavigate();
   const [notification, setNotification] = useState(null);
+  const [loading , setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -27,6 +28,7 @@ const AuthPages = () => {
   const handle_verify_email = async function(){
     try{
       if(!formData.email) return;
+      setLoading(true);
       const res = await fetch(`${API_BACKEND}/auth/email_verify`, {
         method: 'POST',
         headers: {
@@ -41,12 +43,15 @@ const AuthPages = () => {
       }
     } catch (err){
       console.log(err.message);
+    } finally {
+      setLoading(false);
     }
   }
 
   const handle_sign_in = async function(){
     try{
       if(!formData.email) return;
+      setLoading(true);
       const res = await fetch(`${API_BACKEND}/auth/sign_in`, {
         method: 'POST',
         headers: {
@@ -66,6 +71,8 @@ const AuthPages = () => {
     } catch (err){
       console.log(err.message);
       setNotification({error: err.message});
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -154,13 +161,20 @@ const AuthPages = () => {
                       onChange={handleInputChange}
                     />
                   </div>
-
+                  {loading ?
+                  <div
+                    className="w-full bg-blue-600 text-white items-center flex justify-center p-2 rounded-md"
+                  >
+                    <div className='p-3.5 border-3 border-t-transparent w-fit rounded-full animate-spin'></div>
+                  </div>
+                  :
                   <button
                     type="submit"
                     className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-greebluen-500 focus:ring-offset-2 font-medium"
                   >
                   {!isLogin ? 'Verify Email' : 'Sign In'}
                   </button>
+                  }
                 </>
             </form>
           )}

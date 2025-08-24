@@ -33,7 +33,9 @@ const Dashboard = function(){
 						setDetails(result);
 					}
 					
-				} 
+				} else {
+					navigate('/');
+				}
 			} catch(err) {
 				console.log(err.message);
 				navigate("/");

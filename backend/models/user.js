@@ -1,41 +1,28 @@
 const mongoose = require("mongoose");
 
 const VehicleSchema = new mongoose.Schema({
-  licenseNumber: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  vehicleType: {
-    type: String,
-    required: true
-  },
-  vehicleModel: {
-    type: String,
-  },
-  vehicleImage: {
-    type: String,
-    default: null
-  },
+  vehicleNumber: String,
+  vehicleType: String,
   challans: [
     {
-      challanId: { type: String },
-      violationType: { type: String },
-      violationDate: { type: Date },
-      fineAmount: { type: Number },
-      status: { type: String, enum: ["Pending", "Paid"], default: "Pending" },
-      evidenceImage: { type: String, default: null }
+      challanId: String,
+      date: String,
+      violation: String,
+      location: String,
+      fineAmount: Number,
+      status: String,
+      evidenceUrl: String
     }
   ]
 }, { timestamps: true });
 
 const UserSchema = new mongoose.Schema({
-  firstName: { type: String, trim: true },
-  lastName: { type: String, trim: true },
+  name: { type: String, trim: true },
   password: { type: String },
   contact: { type: Number },
   email: { type: String, required: true, unique: true, lowercase: true, trim: true },
   address: { type: String },
+  licenseNumber: String,
   agreeToTerms: { type: Boolean, default: false },
   profile_img: { type: String, default: null },
   otp: { type: String, default: null },

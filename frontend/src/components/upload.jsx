@@ -6,12 +6,11 @@ import { FaEllipsisH, FaEllipsisV, FaTimes } from "react-icons/fa";
 import Violation from "./violation";
 import Page from "./page_1";
 
-function Upload({ngrok_url}) {
+function Upload({ngrok_url, send, setSend}) {
   const [videoFile, setVideoFile] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [mode, setMode] = useState("video");
   const [videoUrl, setVideoUrl] = useState(null);
-  const [send, setSend] = useState(null);
   const [notification, setNotification] = useState(null);
 
   const handleVideoChange = (e) => {

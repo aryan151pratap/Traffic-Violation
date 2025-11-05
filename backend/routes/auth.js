@@ -41,18 +41,19 @@ router.post('/send_otp', async (req, res) => {
 router.post('/email_verify', async (req, res) => {
 	try {
 		const { email, password } = req.body;
-		console.log(email);
 		let user = await User.findOne({ email });
-
+		console.log(user);
+		console.log(email);
 		if (user) return res.status(400).json({ error: 'Email already exists' });
-
+		
 		const otp = generateOTP();
 		const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // expires in 10 minutes
+		
+		await sendMail(email, "Your OTP Code", `Your OTP is ${otp}`);
 
 		user = new User({ email, password, otp, otpExpires: otpExpiry });
 		await user.save();
 
-		await sendMail(email, "Your OTP Code", `Your OTP is ${otp}`);
 
 		res.status(200).json({ status: `OTP sent to ${email}` });
 	} catch (err) {

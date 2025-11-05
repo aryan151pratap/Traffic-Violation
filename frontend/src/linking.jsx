@@ -5,11 +5,15 @@ import Top from './right/top';
 import { FaFileUpload } from 'react-icons/fa';
 import Upload from './components/upload';
 import Setting from './components/setting';
+import YoloAnalytics from './components/YoloAnalytics';
+import { analyticsData } from "./components/analytics"; // your data file
+
 
 function Linking() {
   const [activeFeature, setActiveFeature] = useState({name: "Upload File", icon: <FaFileUpload />});
   const [ngrok_url, setNgrok_url] = useState('http://localhost:5000');
-
+  const [send, setSend] = useState(null);
+  
   return (
 	<div className='h-screen sm:h-screen w-full'>
 	  <div className='h-full w-full flex sm:flex-row flex-col'>
@@ -25,11 +29,14 @@ function Linking() {
 		  </div>
 		  {activeFeature?.name === "Upload File" ?
 			<Upload 
-			 ngrok_url={ngrok_url}
+			 ngrok_url={ngrok_url} send={send} setSend={setSend}
 			/>
 			:
 			activeFeature?.name === "Settings" ?
 			<Setting ngrok_url={ngrok_url} setNgrok_url={setNgrok_url}/>
+			:
+			(analyticsData && activeFeature?.name === "Analytics") ?
+			<YoloAnalytics analyticsData={analyticsData}/>
 			:
 			<div className='h-full w-full items-center flex justify-center bg-zinc-200'>
 			  <div className='flex flex-col gap-4 items-center'>

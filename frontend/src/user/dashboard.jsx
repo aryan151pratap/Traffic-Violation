@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import UserForm from "./user_details";
 import Notification from "../components/notification";
 import UserProfile from "./profile";
+import Vehicles from "./add_vehicles";
 const API_BACKEND = import.meta.env.VITE_BACKEND;
 
 const Dashboard = function(){
@@ -13,6 +14,8 @@ const Dashboard = function(){
 	const navigate = useNavigate();
 	const [notification, setNotification] = useState(null);
 	const [loading, setLoading] = useState(false);
+	const [counter, setCounter] = useState(0);
+
 
 	useEffect(() => {
 		const check_user = async function(){
@@ -31,6 +34,10 @@ const Dashboard = function(){
 					console.log(result);
 					if(res.ok){
 						setDetails(result);
+					}else{
+						navigate('/');
+						localStorage.removeItem('email');
+						localStorage.removeItem('userId');
 					}
 					
 				} else {
@@ -45,11 +52,12 @@ const Dashboard = function(){
 		}
 	
 		check_user();
-	}, [email, userId]);
+	}, [email, userId, counter]);
 
 	
 	return(
 		<div>
+			
 			{loading ?
 			<div className="w-full items-center h-screen flex flex-col gap-2 justify-center">
 				<div className="p-5 border-3 border-t-transparent border-b-transparent w-fit rounded-full animate-spin"></div>
@@ -63,7 +71,7 @@ const Dashboard = function(){
 				</div>
 			:
 				<div>
-					<UserProfile user={details}/>
+					<UserProfile user={details} setCounter={setCounter}/>
 				</div>
 			}
 

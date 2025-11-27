@@ -6,7 +6,7 @@ import { FaEllipsisH, FaEllipsisV, FaTimes } from "react-icons/fa";
 import Violation from "./violation";
 import Page from "./page_1";
 
-function Upload({ngrok_url, send, setSend}) {
+function Upload({ngrok_url, send, setSend, result, setResult}) {
   const [videoFile, setVideoFile] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [mode, setMode] = useState("video");
@@ -182,7 +182,7 @@ function Upload({ngrok_url, send, setSend}) {
 
         </div>
         <div className="md:overflow-auto">
-          <Violation/>
+          <Violation result={result} setResult={setResult}/>
         </div>
       </div>
 

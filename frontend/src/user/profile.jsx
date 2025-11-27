@@ -105,7 +105,11 @@ export default function UserProfile({ user, setCounter }) {
                             <p><strong>Violation:</strong> {c.violation}</p>
                             <p><strong>Location:</strong> {c.location}</p>
                             <p><strong>Fine Amount:</strong> ₹{c.fineAmount}</p>
-                            <p><strong>Status:</strong> {c.status}</p>
+                            <p><strong>Status:</strong> 
+                              <span className={`ml-1 text-sm px-2 p-1 ${c?.status == "Pending" ? "bg-yellow-300 text-yellow-800 font-semibold" : "bg-green-300 text-green-800"}`}>
+                                {c.status}
+                              </span>
+                            </p>
                             {c.evidence && c.evidence.screenshot && (
                               <img
                                 src={c.evidence.screenshot}

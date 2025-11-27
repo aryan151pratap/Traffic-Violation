@@ -6,21 +6,20 @@ import UserProfile from "./profile";
 import Vehicles from "./add_vehicles";
 const API_BACKEND = import.meta.env.VITE_BACKEND;
 
-const Dashboard = function(){
+const Dashboard = function({setFullLoading}){
 
 	const email = localStorage.getItem('email');
 	const userId = localStorage.getItem('userId');
 	const [details, setDetails] = useState(null);
 	const navigate = useNavigate();
 	const [notification, setNotification] = useState(null);
-	const [loading, setLoading] = useState(false);
 	const [counter, setCounter] = useState(0);
 
 
 	useEffect(() => {
 		const check_user = async function(){
 			try{
-				setLoading(true);
+				setFullLoading(true);
 				if(email && userId){
 					console.log(email, userId);
 					const res = await fetch(`${API_BACKEND}/user/details`, {
@@ -47,7 +46,7 @@ const Dashboard = function(){
 				console.log(err.message);
 				navigate("/");
 			} finally {
-				setLoading(false);
+				setFullLoading(false);
 			}
 		}
 	
@@ -58,14 +57,7 @@ const Dashboard = function(){
 	return(
 		<div>
 			
-			{loading ?
-			<div className="w-full items-center h-screen flex flex-col gap-2 justify-center">
-				<div className="p-5 border-3 border-t-transparent border-b-transparent w-fit rounded-full animate-spin"></div>
-				<div>
-					Loading Details...
-				</div>
-			</div>	
-			: !details?.agreeToTerms ?
+			{!details?.agreeToTerms ?
 				<div>
 					<UserForm setNotification={setNotification} setDetails={setDetails}/>
 				</div>

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Notification from '../components/notification';
 const API_BACKEND = import.meta.env.VITE_BACKEND;
 
-const AuthPages = () => {
+const AuthPages = ({setFullLoading}) => {
   const [isLogin, setIsLogin] = useState(true);
   const [otpStep, setOtpStep] = useState(false);
   const navigate = useNavigate();

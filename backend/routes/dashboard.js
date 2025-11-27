@@ -65,5 +65,14 @@ router.post("/add-vehicle", async (req, res) => {
   }
 });
 
+router.get('/delete-vehicle', async (req, res) => {
+  try{
+    const {email} = req.body();
+  } catch (err){
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+})
+
 
 module.exports = router;

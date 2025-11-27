@@ -1,0 +1,22 @@
+✔ Group violations by vehicle
+✔ Only consider violations that are challan-capable
+✔ A challan is valid ONLY if the same vehicle also contains a number plate
+✔ Return only those challan-eligible vehicle objects
+
+✔ What Jimp Does in a Tesseract Pipeline
+(Jimp is optional, but useful because it helps you:)
+
+Resize the image
+Convert to grayscale
+Increase contrast
+Remove noise
+Crop the region
+
+=> These steps make OCR more accurate.
+
+✔ Without Jimp
+(And it will work but accuracy may drop if the image is:)
+Low resolution
+Noisy
+Too bright or dark
+Contains background patterns

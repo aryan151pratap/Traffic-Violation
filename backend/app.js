@@ -8,6 +8,9 @@ const connectDB = require('./db.js');
 const Backend = require('./routes/backend.js');
 const Authentication = require('./routes/auth.js');
 const Dashboard = require('./routes/dashboard.js');
+const ocr = require("./routes/OCR.js");
+const user = require("./routes/challan");
+
 const app = express();
 
 connectDB();
@@ -22,6 +25,8 @@ app.use(express.json());
 app.use('/api', Backend);
 app.use('/auth', Authentication);
 app.use('/user', Dashboard);
+app.use('/', ocr);
+app.use('/', user);
 
 
 app.get('/', (req, res) => {

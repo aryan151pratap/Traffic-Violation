@@ -4,12 +4,13 @@ import { Link } from "react-router-dom";
 import trafficVideo from './video/video.mp4';
 
 
-const TrafficViolationLanding = () => {
+const TrafficViolationLanding = ({setFullLoading}) => {
 
   const [user, setUser] = useState(null);
   const [userId, setUserId] = useState(null);
   useEffect(() => {
     const check_user = async function(){
+      setFullLoading(true);
       try{
         const email = localStorage.getItem("email");
 			  const user_id = localStorage.getItem("userId");
@@ -20,6 +21,8 @@ const TrafficViolationLanding = () => {
         }
       } catch(err) {
         console.log(err.message);
+      } finally {
+        setFullLoading(false);
       }
     }
 

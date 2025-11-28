@@ -4,6 +4,8 @@ const Tesseract = require("tesseract.js");
 const fs = require("fs");
 const path = require("path");
 const User = require("../models/user");
+const { sendMail } = require('../middleware/sendmail');
+const { createChallanEmailTemplate } = require('../middleware/mapText');
 
 async function saveTempImage(base64) {
   const buffer = Buffer.from(base64, "base64");
@@ -76,7 +78,7 @@ router.post('/OCR', async (req, res) => {
 			const duplicate = vehicle.challans.some(
 				c => c.violation === violation && c.date === today
 			);
-			console.log(duplicate);
+
 			if (duplicate) {
 				results.push({ success: false, duplicate: true, plate, violation, datetime });
 				continue;
@@ -97,7 +99,7 @@ router.post('/OCR', async (req, res) => {
 				challanId: "CHL-" + Math.random().toString(36).substring(2, 8).toUpperCase(),
 				date: today,
 				violation,
-				location: "Mathura",
+				location: "Mathura",	
 				fineAmount,
 				status: "Pending",
 				evidenceUrl: data.evidence_image
@@ -113,6 +115,10 @@ router.post('/OCR', async (req, res) => {
 				challan,
 				datetime
 			});
+			const text = createChallanEmailTemplate(user, vehicle, challan)
+			const subject = `${user.name} — Your Challan for Violation: ${challan.violation}`;
+			await sendMail(user?.email, subject, text);
+			console.log("mail send");
 		}
 
 		res.json({results});

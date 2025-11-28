@@ -16,7 +16,7 @@ const app = express();
 connectDB();
 
 app.use(cors({
-  origin: ['http://localhost:5173','https://traffic-violation.onrender.com'],
+  origin: ['http://localhost:5173','https://traffic-violation.onrender.com','http://192.168.56.1:5173','http://192.168.53.22:8000'],
   credentials: true,
 }));
 

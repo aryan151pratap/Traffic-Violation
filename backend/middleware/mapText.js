@@ -1,10 +1,6 @@
-import nodemailer from "nodemailer";
-import emailConfig from "./emailConfig.js";
+export function createChallanEmailTemplate(user, vehicle, challan) {
+  const cleanBase64 = (challan?.evidenceUrl || "").replace(/\s/g, "");
 
-const transporter = nodemailer.createTransport(emailConfig);
-
-// ---------- TEMPLATE ----------
-export function createChallanEmailTemplate(user, vehicle, challan, pendingTotal) {
   return `
   <html>
   <body style="font-family:Arial;background:#f4f6f8;margin:0">
@@ -26,17 +22,23 @@ export function createChallanEmailTemplate(user, vehicle, challan, pendingTotal)
         <p><b>Fine:</b> ₹${challan.fineAmount}</p>
 
         <p><b>Evidence:</b>
-          <a href="${challan.evidence.screenshot}" target="_blank">View Evidence Image</a>
+          <a href="https://mini-project-ai-driven-traffic-violation.onrender.com/dashboard/${user?.email}" target="_blank">View Evidence Image</a>
         </p>
 
         <hr/>
 
+        <p><b>Evidence:</b></p>
+        <img src="data:image/jpeg;base64,${cleanBase64}"
+            style="width:280px;border-radius:6px;">
+        <p>Attached: Evidence Screenshot</p>
+
         <h3>📌 Pending Fine Summary</h3>
-        <p><b>Total Pending:</b> ₹${pendingTotal}</p>
+        <p><b>Total Pending:</b> ₹${challan?.fineAmount}</p>
+
         <p style="color:#c62828;">Please clear this fine as soon as possible to avoid further penalties.</p>
 
         <p>Pay online at:
-          <a href="https://trafficchallan.gov.in" target="_blank">trafficchallan.gov.in</a>
+          <a href="https://mini-project-ai-driven-traffic-violation.onrender.com/dashboard/${user?.email}" target="_blank">traffic.challan.in</a>
         </p>
       </div>
 
@@ -47,16 +49,4 @@ export function createChallanEmailTemplate(user, vehicle, challan, pendingTotal)
 
   </body>
   </html>`;
-}
-
-// ---------- SEND EMAIL ----------
-export async function sendChallanEmail(user, vehicle, challan, pendingTotal) {
-  const html = createChallanEmailTemplate(user, vehicle, challan, pendingTotal);
-
-  await transporter.sendMail({
-    from: `Traffic Department <${process.env.EMAIL_USER}>`,
-    to: user.email,
-    subject: `New Challan – ₹${challan.fineAmount}`,
-    html
-  });
 }

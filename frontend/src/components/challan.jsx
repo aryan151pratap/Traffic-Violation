@@ -144,8 +144,8 @@ const Challan = function({setLoading}){
 													</div>
 													
 													{v?.challans?.map((c, index2) => (
-														<div key={index2} className={`p-2 ${c?.status == "Pending" ? "bg-yellow-200 text-yellow-800" : "bg-green-200 text-green-800"}`}>
-															<div className="grid grid-cols-5 gap-4 items-center">
+														<div key={index2} className={`w-full flex flex-row p-2 ${c?.status == "Pending" ? "bg-yellow-200 text-yellow-800" : "bg-green-200 text-green-800"}`}>
+															<div className="w-full grid grid-cols-5 items-center gap-2">
 																<p className="flex flex-col gap-1 hover:underline cursor-pointer">
 																	<span className="line-clamp-1 font-semibold">{c?.challanId}</span>
 																</p>

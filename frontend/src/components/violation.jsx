@@ -209,7 +209,7 @@ export default function Violation({result, setResult}) {
           🚦 Traffic Violation Live Console
         </h2>
 
-        <div ref={scrollRef} className="h-[230px] p-2 text-sm bg-slate-50 text-slate-900 overflow-y-auto">
+        <div ref={scrollRef} className="h-[245px] p-2 text-sm bg-slate-50 text-slate-900 overflow-y-auto">
           {result.length === 0 ? (
             <p className="text-gray-500">[waiting for events...]</p>
           ) : (
